@@ -1,5 +1,5 @@
 ## Introduction
-Welcome to Aspen Capital's Data Enginnering challenge. This assignment will help us better assess your technical skills. We recommend that you focus on the requirements listed below and if time permitting - work on any additional features (of your own choosing).
+Welcome to Aspen Capital's Data Engineering challenge. This assignment will help us better assess your technical skills. We recommend that you focus on the requirements listed below and if time permitting - work on any additional features (of your own choosing).
 
 ## Background
 One aspect of this job is the forecasting of payments, and for this exercise, we need to create a payment schedule. Part of the schedule is projected, and the other is actual payments. We need to line up projection and actual payments given the provided database schema.

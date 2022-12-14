@@ -1,25 +1,33 @@
-## Introduction
-Welcome to Aspen Capital's Data Engineering challenge. This assignment will help us assess your technical skills. We recommend that you focus on the core requirements listed below and if time permitting - work on any additional features of your own choosing. We are using AWS so that is the preferred cloud provider for this project, but if you aren't familiar with AWS, feel free to use an alternate cloud provider you are familiar with. This project is a starting place - if something doesn't make sense or you know a better way go with that. Document the tradeoffs you made in going with alternatives. This is project is understanding how you engineer systems - the goal is to understand how you think, not to get a particular solution.
+# Solution
+##### By Devon Rasch
+##### Date: 12/14/2022
 
-## Background
-We are in the process of migrating legacy databases to AWS. The legacy databases are located on prem in a colocation facility. We need to migrate the data in a cost effective way and be able to operate it with a small ops team. We need a pipeline that will sync the data to an AWS data lake and then ETL it into a datastore (e.g RDS, Athena, etc.) to provide the data source for the new applications being built. While the migration is happening the AWS and on prem data need to stay in sync (some delay is allowed. Part of the submission is to decide what delay makes sense).
+***
 
-## Requirements
-### High Level
-* Using the xlsx data file in the data directory of this repository design an ETL process that will match this target data model - https://dbdiagram.io/d/62268eff61d06e6eadbc43bc
-* The solution needs to be provided as design docs, diagrams, and code. Since time is limited, these artifacts will match an exercise and not production scope.
+## Creating a Data source
+I will start by placing the excel file into an s3 location but this process would be excellent if it had this data already stored in Athena so that other tables can be queried from it. 
+o have this data already stored in Athena so that other tables can be queried from it with out the hassle of creating a lot of tables from the initial data retrieval. 
 
-## Hints
-* Using native managed AWS services is preferred over a lot of custom code.
-* It is ok to choose any technology you like but you need to justify the choice.
-* Do your best with the information available. Document assumptions the proceed from there.
+### Step 1 (Glue Script)
+Create a python glue script to get data from the source and place data in parquet files in S3 reflecting the tables that will be assigned from this original table.
 
-## Bonus Points
-* Provision the project in AWS and provide access to review (AWS Free Tier is helpful here).
-* Documentation - architecture diagrams,technical specs, etc.
-* Alternative solution to this type of schema and a possible path to migrate it.
-* IaC for the infrastructure necessary to deploy the pipeline.
+### Step 2 (Athena DDLs)
+Make all of the DDLs for Athena to pick up the parquet files in s3 locations.
 
-## Submission
-* Your submission should be accessible in a public git repository that includes a README.md with all the information you want to include. The expectation is that we can easily follow the steps provided without much leg/guesswork.
-* If your submission does include additional artifacts that are not represented within the repository - the README should provide information on how to retrieve and access these items.
+### Step 3 (Create Setup tools)
+An egg for libraries will have to be used in this process because the libraries needed will not be accessible for us in Glue. Because of this, there will have to be an egg/wheel file with the needed packages so that glue will have the correct python packages it needs to run the script. 
+
+### Step 4 (IAM Roles)
+First create a policy for glue and for glue to access s3. After create a role that uses this policy.
+
+### Step 5 (Glue Job)
+Here I will paste in the script, assign the egg with the needed libraries that I created with the setup tools and placed in s3. Save the job and then run the job to make sure that it succeeds. Next I will create a trigger that runs on a cron schudule in the triggers tab within the Glue console.
+
+Now that data will extract on a daily/hourly basis, the tables with all of the data is now located and accessible for other teams in Athena. 
+
+## Other Databases?
+When using the Glue process, we can put the data anywhere. Glue has the capability to connect to Redshift, RDS, and many other databases that maybe need data extracted from. 
+
+## IaC
+
+Starting with my aws passwords that are located in my class “boto4” that is a small wrapper for boto3. We can store these passwords in s3, and retrieve these keys by accessing s3 only from glue. There are also so many password managers out there that can also hold most of the config files needed. There isn’t much configuration around this build but if we could dive deeper 

@@ -3,7 +3,7 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
-# Node artifact files
+# Packages
 venv-glue
 venv
 
@@ -22,6 +22,7 @@ venv
 # Maven
 target/
 dist/
+boto4.egg-info
 
 # JetBrains IDE
 .idea/

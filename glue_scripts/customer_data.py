@@ -5,8 +5,8 @@ import time
 # boto4
 from boto4 import Boto4
 
-AccessKeyID = 'AKIA5BNPANSXWRDRJLS7'
-SecretAccessKey = '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'
+AccessKeyID = ''
+SecretAccessKey = ''
 
 SOURCE_DATA_PATH = 'data/source-excel/data_engineer_raw_data.xlsx'
 
